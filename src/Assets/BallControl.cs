@@ -36,15 +36,34 @@ public class BallControl : MonoBehaviour
 
     void GoBall()
     {
-        float rand = Random.Range(0, 2);
-        if (rand < 1)
+        int randQuartant = Random.Range(0, 4);
+        int randAngleX = Random.Range(0, 51);
+        int randAngleY = Random.Range(0, 51);
+        int randScale = Random.Range(15, 30);
+
+        Vector2 randomizedDirection = new Vector2();
+
+        switch (randQuartant)
         {
-            rb2d.AddForce(new Vector2(20, -15));
+            case 0:
+                randomizedDirection = new Vector2(20 + randAngleX, 20 + randAngleY).normalized;
+                break;
+
+            case 1:
+                randomizedDirection = new Vector2(20 + randAngleX, - 20 - randAngleY).normalized;
+                break;
+
+            case 2:
+                randomizedDirection = new Vector2(- 20 - randAngleX, -20 - randAngleY).normalized;
+                break;
+
+            case 3:
+                randomizedDirection = new Vector2( -20 - randAngleX, 20 + randAngleY).normalized;
+                break;
         }
-        else
-        {
-            rb2d.AddForce(new Vector2(-20, -15));
-        }
+
+        randomizedDirection.Scale(new Vector2(randScale, randScale));
+        rb2d.AddForce(randomizedDirection);
     }
 
     void OnCollisionEnter2D(Collision2D coll)
