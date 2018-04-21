@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour
 {
     public KeyCode moveUp = KeyCode.W;
-    public KeyCode moveDown = KeyCode.S;
-    public float speed = 10.0f;
-    public float boundY = 2.25f;
+    //public KeyCode moveDown = KeyCode.S;
+
+    //public float speed = 10.0f;
+    //public float boundY = 2.25f;
+    public float upForce = 200.0f;
 
     private Rigidbody2D rb2d;
 
@@ -17,33 +19,50 @@ public class PlayerControls : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
     }
 
+    // FlappyBird
     // Update is called once per frame
     void Update()
     {
-        var vel = rb2d.velocity;
-        if (Input.GetKey(moveUp))
+        //Look for input to trigger a "flap".
+        if (Input.GetKeyDown(moveUp))
         {
-            vel.y = speed;
+            //Bar Flap Animation here
+            //anim.SetTrigger("Flap");
+            
+            // movement
+            rb2d.velocity = Vector2.zero;
+            rb2d.AddForce(new Vector2(0, upForce));
         }
-        else if (Input.GetKey(moveDown))
-        {
-            vel.y = -speed;
-        }
-        else if (!Input.anyKey)
-        {
-            vel.y = 0;
-        }
-        rb2d.velocity = vel;
-
-        var pos = transform.position;
-        if (pos.y > boundY)
-        {
-            pos.y = boundY;
-        }
-        else if (pos.y < -boundY)
-        {
-            pos.y = -boundY;
-        }
-        transform.position = pos;
     }
+
+    // old Pong
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    var vel = rb2d.velocity;
+    //    if (Input.GetKey(moveUp))
+    //    {
+    //        vel.y = speed;
+    //    }
+    //    else if (Input.GetKey(moveDown))
+    //    {
+    //        vel.y = -speed;
+    //    }
+    //    else if (!Input.anyKey)
+    //    {
+    //        vel.y = 0;
+    //    }
+    //    rb2d.velocity = vel;
+
+    //    var pos = transform.position;
+    //    if (pos.y > boundY)
+    //    {
+    //        pos.y = boundY;
+    //    }
+    //    else if (pos.y < -boundY)
+    //    {
+    //        pos.y = -boundY;
+    //    }
+    //    transform.position = pos;
+    //}
 }
