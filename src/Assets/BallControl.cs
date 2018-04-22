@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
-
     private Rigidbody2D rb2d;
     private Vector2 vel;
 
@@ -47,23 +46,27 @@ public class BallControl : MonoBehaviour
         {
             case 0:
                 randomizedDirection = new Vector2(20 + randAngleX, 20 + randAngleY).normalized;
+                rb2d.gameObject.transform.rotation = new Quaternion(0, -1, 0, 0);
                 break;
 
             case 1:
                 randomizedDirection = new Vector2(20 + randAngleX, - 20 - randAngleY).normalized;
+                rb2d.gameObject.transform.rotation = new Quaternion(0, -1, 0, 0);
                 break;
 
             case 2:
                 randomizedDirection = new Vector2(- 20 - randAngleX, -20 - randAngleY).normalized;
+                rb2d.gameObject.transform.rotation = new Quaternion(0, 0, 0, 1);
                 break;
 
             case 3:
                 randomizedDirection = new Vector2( -20 - randAngleX, 20 + randAngleY).normalized;
+                rb2d.gameObject.transform.rotation = new Quaternion(0, 0, 0, 1);
                 break;
         }
 
         randomizedDirection.Scale(new Vector2(randScale, randScale));
-        rb2d.AddForce(randomizedDirection);
+        rb2d.AddForce(randomizedDirection);        
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -73,6 +76,17 @@ public class BallControl : MonoBehaviour
             vel.x = rb2d.velocity.x;
             vel.y = (rb2d.velocity.y / 2.0f) + (coll.collider.attachedRigidbody.velocity.y / 3.0f);
             rb2d.velocity = vel;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D coll)
+    {
+        if (coll.collider.CompareTag("Player"))
+        {
+            if (rb2d.velocity.x > 0)
+                rb2d.gameObject.transform.rotation = new Quaternion(0, -1, 0, 0);
+            else
+                rb2d.gameObject.gameObject.transform.rotation = new Quaternion(0, 0, 0, 1);
         }
     }
 }
