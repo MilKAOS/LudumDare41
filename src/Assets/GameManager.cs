@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public static void Score(string wallID)
+    public static void Score(string wallID, AudioSource ballAudioSource)
     {
         if (wallID == "Right")
         {
@@ -56,5 +56,10 @@ public class GameManager : MonoBehaviour {
         {
             PlayerScore2++;
         }
+
+        if (PlayerScore1 == 10 || PlayerScore2 == 10)
+            ballAudioSource.PlayOneShot(Resources.Load<AudioClip>("win"));
+        else
+            ballAudioSource.PlayOneShot(Resources.Load<AudioClip>("out"));
     }
 }

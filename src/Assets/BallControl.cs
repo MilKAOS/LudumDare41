@@ -6,11 +6,14 @@ public class BallControl : MonoBehaviour
 {
     private Rigidbody2D rb2d;
     private Vector2 vel;
+    private AudioSource audioSource;
+    private AudioClip bipClip;
 
     // Use this for initialization
     void Start ()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         Invoke("GoBall", 2);
     }
 	
@@ -73,6 +76,10 @@ public class BallControl : MonoBehaviour
     {
         if (coll.collider.CompareTag("Player"))
         {
+            bipClip = Resources.Load<AudioClip>(string.Format("{0}", GetPaddleCollisionSoundName()));
+            audioSource.clip = bipClip;
+            audioSource.Play();
+
             vel.x = rb2d.velocity.x;
             vel.y = (rb2d.velocity.y / 2.0f) + (coll.collider.attachedRigidbody.velocity.y / 3.0f);
             rb2d.velocity = vel;
@@ -87,6 +94,24 @@ public class BallControl : MonoBehaviour
                 rb2d.gameObject.transform.rotation = new Quaternion(0, -1, 0, 0);
             else
                 rb2d.gameObject.gameObject.transform.rotation = new Quaternion(0, 0, 0, 1);
+        }
+    }
+
+    private string GetPaddleCollisionSoundName()
+    {
+        var rndSound = Random.Range(0, 4);
+        switch (rndSound)
+        {
+            case 0:
+                return "bip01";
+            case 1:
+                return "bip02";
+            case 2:
+                return "bip03";
+            case 3:
+                return "bip04";
+            default:
+                throw new System.ArgumentException("sound missing");
         }
     }
 }

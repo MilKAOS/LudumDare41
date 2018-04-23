@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SideWalls : MonoBehaviour {
-
+public class SideWalls : MonoBehaviour
+{
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if (hitInfo.name == "Ball")
         {
             string wallName = transform.name;
-            GameManager.Score(wallName);
+            GameManager.Score(wallName, hitInfo.GetComponent<AudioSource>());
             hitInfo.gameObject.SendMessage("RestartGame", 1.0f, SendMessageOptions.RequireReceiver);
         }
     }
